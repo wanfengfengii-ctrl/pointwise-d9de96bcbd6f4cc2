@@ -1,0 +1,11 @@
+{
+  "recording": "north-bay-17",
+  "shift_id": "evening-17",
+  "point": "west-bay",
+  "old_threshold_mc": 8500,
+  "new_threshold_mc": 9000,
+  "prefix_count": 41,
+  "prefix_temperature_mc": 7000,
+  "overlap_mc": [8600, 9300, 7000],
+  "after_retirement_mc": 9100
+}
