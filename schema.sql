@@ -114,6 +114,27 @@ CREATE TABLE IF NOT EXISTS received_seals (
     FOREIGN KEY (recording, generation) REFERENCES lanes(recording, generation)
 );
 
+CREATE TABLE IF NOT EXISTS custody_pair (
+    shift_id TEXT PRIMARY KEY REFERENCES shifts(shift_id),
+    role TEXT NOT NULL CHECK (role IN ('device', 'station')),
+    device_id TEXT NOT NULL CHECK (length(device_id) > 0),
+    station_id TEXT NOT NULL CHECK (length(station_id) > 0),
+    key BLOB NOT NULL CHECK (length(key) > 0),
+    recording TEXT NOT NULL,
+    generation INTEGER NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS custody_delivery_history (
+    shift_id TEXT NOT NULL REFERENCES shifts(shift_id),
+    recording TEXT NOT NULL,
+    generation INTEGER NOT NULL,
+    delivery_no INTEGER NOT NULL CHECK (delivery_no > 0),
+    source_seq INTEGER NOT NULL CHECK (source_seq > 0),
+    PRIMARY KEY (recording, generation, delivery_no),
+    UNIQUE (recording, generation, source_seq),
+    FOREIGN KEY (recording, generation) REFERENCES lanes(recording, generation)
+);
+
 CREATE TABLE IF NOT EXISTS reports (
     report_id TEXT PRIMARY KEY,
     shift_id TEXT NOT NULL REFERENCES shifts(shift_id),

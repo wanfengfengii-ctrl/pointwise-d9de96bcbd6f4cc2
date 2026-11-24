@@ -5,9 +5,12 @@
 ```sh
 python3 -B check_project.py
 python3 -B demo.py --temporary
+python3 -B custody_demo.py --temporary
 ```
 
-运行环境为 Python 3.11 标准库。演示也可用 `python3 -B demo.py --db ./demo.sqlite3` 明确指定一个新文件。演示采用 `sample.json` 的固定输入，输出实际签发结果及按原号复核的结果。
+`check_project.py` 现在也运行 `tests/test_custody.py` 的双库托管、失答重投、腾退和停源领取核验。`custody_demo.py` 使用两个临时 SQLite 库演示 CUSTODY.md 中的缺件、确认腾退、补收和班报复领；原 `demo.py --temporary` 仍演示单库在线换规。
+
+运行环境为 Python 3.11 标准库。单库演示也可用 `python3 -B demo.py --db ./demo.sqlite3` 明确指定一个新文件。演示采用 `sample.json` 的固定输入，输出实际签发结果及按原号复核的结果。
 
 ## 班次操作
 

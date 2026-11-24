@@ -31,11 +31,19 @@ def emit_reading(db, lane, reading):
 
 def last_delivery_through(db, lane, cutoff):
     row = db.execute(
-        '''SELECT delivery_no FROM emissions WHERE recording = ? AND generation = ? AND source_seq <= ?
-           ORDER BY source_seq DESC LIMIT 1''',
-        (lane.recording, lane.generation, cutoff),
+        '''SELECT MAX(delivery_no) AS delivery_no FROM (
+               SELECT delivery_no
+               FROM emissions
+               WHERE recording = ? AND generation = ? AND source_seq <= ?
+               UNION ALL
+               SELECT delivery_no
+               FROM custody_delivery_history
+               WHERE recording = ? AND generation = ? AND source_seq <= ?
+           )''',
+        (lane.recording, lane.generation, cutoff,
+         lane.recording, lane.generation, cutoff),
     ).fetchone()
-    return 0 if row is None else row['delivery_no']
+    return 0 if row is None or row['delivery_no'] is None else row['delivery_no']
 
 
 def read_delivery(db, lane, delivery_no):
